@@ -6,7 +6,6 @@ public class Orbit : MonoBehaviour
     public double mass;
     public Vector3d velocity;
     public Vector3d position;
-    public bool predict;
 
     private void Update()
     {

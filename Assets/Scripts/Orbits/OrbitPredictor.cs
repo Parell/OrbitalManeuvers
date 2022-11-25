@@ -89,15 +89,10 @@ public class OrbitPredictor : MonoBehaviour
 
         for (int bodyIndex = 0; bodyIndex < virtualOrbitData.Length; bodyIndex++)
         {
-            var pathColour = Color.white;
-
             // var lineRenderer = orbits[bodyIndex].scaledTransform.GetComponent<LineRenderer>();
             var lineRenderer = orbitController.orbits[bodyIndex].transform.GetComponent<LineRenderer>();
             lineRenderer.positionCount = drawPoints[bodyIndex].Length;
             lineRenderer.SetPositions(drawPoints[bodyIndex]);
-            lineRenderer.startColor = pathColour;
-            lineRenderer.endColor = pathColour;
-            lineRenderer.widthMultiplier = 1;
         }
     }
 }
