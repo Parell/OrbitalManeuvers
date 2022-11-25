@@ -3,20 +3,21 @@ using UnityEngine;
 [ExecuteAlways]
 public class Orbit : MonoBehaviour
 {
-    public double Mass;
-    public Vector3d Velocity;
-    public Vector3d Position;
+    public double mass;
+    public Vector3d velocity;
+    public Vector3d position;
+    public bool predict;
 
     private void Update()
     {
         if (Application.isPlaying)
         {
-            transform.position = (Vector3)(Position/*  - FloatingOrigin.Instance.originPosition */);
+            transform.position = (Vector3)(position/*  - FloatingOrigin.Instance.originPosition */);
             // scaledTransform.position = (Vector3)(Position / Constant.SCALE/*  - FloatingOrigin.Instance.originPositionScaled */);
         }
         else
         {
-            Position = (Vector3d)transform.position;
+            position = (Vector3d)transform.position;
             // transform.position = scaledTransform.position * Constant.SCALE;
         }
     }

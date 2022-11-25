@@ -2,7 +2,8 @@
     "name": "Test",
     "rootNamespace": "",
     "references": [
-        "Utilities"
+        "Utilities",
+        "Orbits"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

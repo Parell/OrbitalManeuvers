@@ -3,17 +3,17 @@ using UnityEngine;
 [System.Serializable]
 public struct OrbitData
 {
-    public int Index;
-    public double Mass;
-    public Vector3d Velocity;
-    public Vector3d Position;
+    public int index;
+    public double mass;
+    public Vector3d velocity;
+    public Vector3d position;
 
     public OrbitData(int index, double mass, Vector3d velocity, Vector3d position)
     {
-        Index = index;
-        Mass = mass;
-        Velocity = velocity;
-        Position = position;
+        this.index = index;
+        this.mass = mass;
+        this.velocity = velocity;
+        this.position = position;
     }
 
     private Vector3d Gravity(OrbitData[] bodyData)
@@ -22,11 +22,11 @@ public struct OrbitData
 
         for (int i = 0; i < bodyData.Length; i++)
         {
-            if (i == Index) { continue; }
+            if (i == index) { continue; }
 
-            Vector3d r = (bodyData[i].Position - Position);
+            Vector3d r = (bodyData[i].position - position);
 
-            acceleration += (r * (Constant.G * bodyData[i].Mass)) / (r.magnitude * r.magnitude * r.magnitude);
+            acceleration += (r * (Constant.G * bodyData[i].mass)) / (r.magnitude * r.magnitude * r.magnitude);
         }
 
         return acceleration;
@@ -36,13 +36,21 @@ public struct OrbitData
     {
         if (integrationMode == IntegrationMode.Euler)
         {
-            Velocity += deltaTime * Gravity(bodyData);
-            Position += deltaTime * Velocity;
+            position += velocity * deltaTime;
+            velocity += Gravity(bodyData) * deltaTime;
+        }
+        if (integrationMode == IntegrationMode.SemiEuler)
+        {
+            position += (velocity + Gravity(bodyData) * deltaTime) * deltaTime;
+            velocity += Gravity(bodyData) * deltaTime;
         }
         else if (integrationMode == IntegrationMode.Leapfrog)
         {
-            Velocity += deltaTime * Gravity(bodyData);
-            Position += deltaTime * Velocity;
+            velocity += Gravity(bodyData) * 0.5 * deltaTime;
+
+            position += velocity * deltaTime;
+
+            velocity += Gravity(bodyData) * 0.5 * deltaTime;
         }
     }
 }

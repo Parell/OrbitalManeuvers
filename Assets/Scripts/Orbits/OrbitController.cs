@@ -3,6 +3,7 @@ using UnityEngine;
 public enum IntegrationMode
 {
     Euler,
+    SemiEuler,
     Leapfrog,
 }
 
@@ -10,10 +11,11 @@ public class OrbitController : MonoBehaviour
 {
     public static OrbitController Instance;
 
-    public IntegrationMode IntegrationMode;
-    public float FixedStepSize = 0.01f;
-    public Orbit[] Orbits;
-    public OrbitData[] OrbitData;
+    public IntegrationMode integrationMode;
+    public float fixedStepSize = 0.01f;
+    public ComputeShader compute;
+    public Orbit[] orbits;
+    public OrbitData[] orbitData;
 
     private void Awake()
     {
@@ -30,15 +32,15 @@ public class OrbitController : MonoBehaviour
 
     private void Start()
     {
-        Time.fixedDeltaTime = FixedStepSize;
+        Time.fixedDeltaTime = fixedStepSize;
 
         FindOrbits();
 
-        OrbitData = new OrbitData[Orbits.Length];
+        orbitData = new OrbitData[orbits.Length];
 
-        for (int i = 0; i < OrbitData.Length; i++)
+        for (int i = 0; i < orbitData.Length; i++)
         {
-            OrbitData[i] = new OrbitData(i, Orbits[i].Mass, Orbits[i].Velocity, Orbits[i].Position);
+            orbitData[i] = new OrbitData(i, orbits[i].mass, orbits[i].velocity, orbits[i].position);
         }
     }
 
@@ -46,22 +48,22 @@ public class OrbitController : MonoBehaviour
     {
         for (int i = 0; i < GameController.Instance.TimeScale; i++)
         {
-            OrbitData = Propagation(OrbitData, Time.fixedDeltaTime, IntegrationMode);
+            orbitData = Propagation(orbitData, Time.fixedDeltaTime, integrationMode);
 
-            for (int j = 0; j < Orbits.Length; j++)
+            for (int j = 0; j < orbits.Length; j++)
             {
-                Orbits[j].Velocity = OrbitData[j].Velocity;
-                Orbits[j].Position = OrbitData[j].Position;
+                orbits[j].velocity = orbitData[j].velocity;
+                orbits[j].position = orbitData[j].position;
             }
         }
     }
 
-    private void FindOrbits()
+    public void FindOrbits()
     {
-        Orbits = FindObjectsOfType<Orbit>();
+        orbits = FindObjectsOfType<Orbit>();
     }
 
-    private OrbitData[] Propagation(OrbitData[] bodyData, float deltaTime, IntegrationMode integrationMode)
+    public OrbitData[] Propagation(OrbitData[] bodyData, float deltaTime, IntegrationMode integrationMode)
     {
         for (int i = 0; i < bodyData.Length; i++)
         {
