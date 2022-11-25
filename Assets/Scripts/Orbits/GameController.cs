@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour
 
     public double UniversalTime;
     public int TimeScale;
+    public int FrameRateLimit;
 
     private void Awake()
     {
@@ -18,6 +19,11 @@ public class GameController : MonoBehaviour
             Destroy(this);
             Debug.Log($"Cant have more then one Instance on {gameObject.name}.");
         }
+    }
+
+    private void Start()
+    {
+        Application.targetFrameRate = FrameRateLimit;
     }
 
     private void FixedUpdate()

@@ -1,3 +1,16 @@
 {
-	"name": "Orbits"
+    "name": "Orbits",
+    "rootNamespace": "",
+    "references": [
+        "GUID:407ca5c857548ee4ab6619deb07509af"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
