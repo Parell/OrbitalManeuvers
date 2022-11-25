@@ -46,7 +46,7 @@ public class OrbitController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        for (int i = 0; i < GameController.Instance.TimeScale; i++)
+        for (int i = 0; i < GameController.Instance.timeScale; i++)
         {
             orbitData = Propagation(orbitData, Time.fixedDeltaTime, integrationMode);
 

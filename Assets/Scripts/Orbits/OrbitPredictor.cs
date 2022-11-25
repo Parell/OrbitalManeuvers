@@ -17,7 +17,7 @@ public class OrbitPredictor : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            predictionTimer = predictionTimer <= 0 ? predictionInterval : predictionTimer -= Time.deltaTime;
+            predictionTimer = predictionTimer <= 0 ? predictionInterval : predictionTimer -= Time.deltaTime * GameController.Instance.timeScale;
 
             if (predictionTimer <= 0)
             {

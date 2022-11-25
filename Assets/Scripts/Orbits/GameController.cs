@@ -4,9 +4,11 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public double UniversalTime;
-    public int TimeScale;
-    public int FrameRateLimit;
+    public double universalTime;
+    public bool timeScaleKeys = true;
+    public int timeScale;
+    public int maxTimeScale;
+    public int frameRateLimit;
 
     private void Awake()
     {
@@ -23,14 +25,43 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        Application.targetFrameRate = FrameRateLimit;
+        Application.targetFrameRate = frameRateLimit;
+    }
+
+    private void Update()
+    {
+        if (timeScaleKeys)
+        {
+            if (Input.GetKeyUp(KeyCode.Period))
+            {
+                timeScale /= 2;
+            }
+            else if (Input.GetKeyUp(KeyCode.Comma))
+            {
+                timeScale *= 2;
+
+                if (timeScale == 0)
+                {
+                    timeScale = 1;
+                }
+            }
+            else if (Input.GetKeyUp(KeyCode.Slash))
+            {
+                timeScale = 0;
+            }
+
+            if (timeScale >= maxTimeScale)
+            {
+                timeScale = maxTimeScale;
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        for (int i = 0; i < TimeScale; i++)
+        for (int i = 0; i < timeScale; i++)
         {
-            UniversalTime += Time.fixedDeltaTime;
+            universalTime += Time.fixedDeltaTime;
         }
     }
 }

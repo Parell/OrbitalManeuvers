@@ -294,9 +294,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee85b3c413538cb499fc2b4b6d6503b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UniversalTime: 0
-  TimeScale: 1
-  FrameRateLimit: 0
+  universalTime: 0
+  timeScaleKeys: 1
+  timeScale: 0
+  maxTimeScale: 1024
+  frameRateLimit: 0
 --- !u!114 &600425429
 MonoBehaviour:
   m_ObjectHideFlags: 0
