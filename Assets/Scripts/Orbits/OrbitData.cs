@@ -23,6 +23,10 @@ public struct OrbitData
         for (int i = 0; i < bodyData.Length; i++)
         {
             if (i == index) { continue; }
+            if (bodyData[i].mass == 0)
+            {
+                return acceleration;
+            }
 
             Vector3d r = (bodyData[i].position - position);
 
@@ -52,5 +56,11 @@ public struct OrbitData
 
             velocity += Gravity(bodyData) * 0.5 * deltaTime;
         }
+    }
+
+    public void AddForce(Vector3 deltaV, float deltaTime)
+    {
+        // velocity += (Vector3d)(maneuver.acceleration * maneuver.direction * time);
+        velocity += (Vector3d)(deltaV.normalized * deltaV.magnitude * deltaTime);
     }
 }

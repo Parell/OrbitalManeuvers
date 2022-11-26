@@ -63,7 +63,7 @@ public class OrbitPredictor : MonoBehaviour
                 // {
                 //     if (maneuver.duration >= 0)
                 //     {
-                //         virtualBodyData[1].AddConstantAcceleration(maneuver, stepSize);
+                //         virtualOrbitData[1].AddForce(maneuver, stepSize);
                 //         maneuver.duration -= step * stepSize;
                 //     }
                 //     else if (step * stepSize > (maneuver.startTime + maneuver.duration))

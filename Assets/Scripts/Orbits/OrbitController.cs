@@ -2,9 +2,7 @@ using UnityEngine;
 
 public enum IntegrationMode
 {
-    Euler,
-    SemiEuler,
-    Leapfrog,
+    Euler, SemiEuler, Leapfrog
 }
 
 public class OrbitController : MonoBehaviour
@@ -13,6 +11,7 @@ public class OrbitController : MonoBehaviour
 
     public IntegrationMode integrationMode;
     public float fixedStepSize = 0.01f;
+    public bool masslessOptimization;
     public ComputeShader compute;
     public Orbit[] orbits;
     public OrbitData[] orbitData;
@@ -69,6 +68,7 @@ public class OrbitController : MonoBehaviour
         {
             OrbitData tempBodyData = bodyData[i];
 
+            // Move Integration into controller
             tempBodyData.Integration(bodyData, deltaTime, integrationMode);
 
             bodyData[i] = tempBodyData;
