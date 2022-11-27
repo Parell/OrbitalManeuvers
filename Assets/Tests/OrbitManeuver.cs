@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class OrbitManeuver : MonoBehaviour
 {
-    public Maneuver[] maneuvers;
+    public List<Maneuver> maneuvers;
     public Orbit orbitBody;
-    // public float predictionLength;
-    //public OrbitController orbitController;
+    public float predictionInterval = 1;
+    public OrbitPredictor orbitPredictor;
+
+    private float predictionTimer;
 
     private void Update()
     {
@@ -24,20 +27,28 @@ public class OrbitManeuver : MonoBehaviour
 
         // if (Application.isPlaying)
         // {
-        //     // if (maneuver.startTime > 0)
-        //     // {
-        //     //     maneuver.startTime -= Time.deltaTime * GameController.Instance.timeScale;
-        //     // }
-        //     // else if (maneuver.startTime <= 0)
-        //     // {
-        //     //     if (maneuver.duration >= 0)
-        //     //     {
-        //     //         // orbitController.orbitData[1].AddConstantAcceleration(maneuver, 0);
-        //     //         maneuver.duration -= Time.deltaTime * GameController.Instance.timeScale;
+        //     predictionTimer = predictionTimer <= 0 ? predictionInterval : predictionTimer -= Time.deltaTime * GameController.Instance.timeScale;
 
-        //     //         maneuver = new Maneuver();
-        //     //     }
-        //     // }
+        //     if (predictionTimer <= 0)
+        //     {
+        //         if (maneuver.startTime > 0)
+        //         {
+        //             maneuver.startTime -= Time.deltaTime * GameController.Instance.timeScale;
+        //         }
+        //         else if (maneuver.startTime <= 0)
+        //         {
+        //             if (maneuver.duration >= 0)
+        //             {
+        //                 orbitController.orbitData[1].AddConstantAcceleration(maneuver, 0);
+        //                 maneuver.duration -= Time.deltaTime * GameController.Instance.timeScale;
+
+        //                 maneuver = new Maneuver();
+        //             }
+        //         }
+        //     }
+        // }
+        // else
+        // {
         // }
     }
 }

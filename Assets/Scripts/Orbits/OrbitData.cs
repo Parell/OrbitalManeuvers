@@ -23,10 +23,6 @@ public struct OrbitData
         for (int i = 0; i < bodyData.Length; i++)
         {
             if (i == index) { continue; }
-            if (bodyData[i].mass == 0)
-            {
-                return acceleration;
-            }
 
             Vector3d r = (bodyData[i].position - position);
 
@@ -43,24 +39,16 @@ public struct OrbitData
             position += velocity * deltaTime;
             velocity += Gravity(bodyData) * deltaTime;
         }
-        if (integrationMode == IntegrationMode.SemiEuler)
-        {
-            position += (velocity + Gravity(bodyData) * deltaTime) * deltaTime;
-            velocity += Gravity(bodyData) * deltaTime;
-        }
         else if (integrationMode == IntegrationMode.Leapfrog)
         {
             velocity += Gravity(bodyData) * 0.5 * deltaTime;
-
             position += velocity * deltaTime;
-
             velocity += Gravity(bodyData) * 0.5 * deltaTime;
         }
     }
 
-    public void AddForce(Vector3 deltaV, float deltaTime)
+    public void AddForce(Maneuver maneuver, float deltaTime)
     {
-        // velocity += (Vector3d)(maneuver.acceleration * maneuver.direction * time);
-        velocity += (Vector3d)(deltaV.normalized * deltaV.magnitude * deltaTime);
+        velocity += (Vector3d)(maneuver.acceleration * maneuver.direction * deltaTime);
     }
 }

@@ -1,10 +1,10 @@
 using UnityEngine;
 
-
 [ExecuteAlways, RequireComponent(typeof(OrbitController))]
 public class OrbitPredictor : MonoBehaviour
 {
     public OrbitController orbitController;
+    public float predictionLength;
     public float stepSize = 1;
     public int steps = 100;
     public float predictionInterval = 1;
@@ -17,7 +17,7 @@ public class OrbitPredictor : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            predictionTimer = predictionTimer <= 0 ? predictionInterval : predictionTimer -= Time.deltaTime * GameController.Instance.timeScale;
+            predictionTimer = predictionTimer <= 0 ? predictionInterval : predictionTimer -= Time.deltaTime;
 
             if (predictionTimer <= 0)
             {
@@ -33,6 +33,8 @@ public class OrbitPredictor : MonoBehaviour
 
     private void UpdateOrbit()
     {
+        predictionLength = (steps * stepSize) * 2;
+
         virtualOrbitData = new OrbitData[orbitController.orbits.Length];
         Vector3[][] drawPoints = new Vector3[orbitController.orbits.Length][];
 
@@ -50,6 +52,7 @@ public class OrbitPredictor : MonoBehaviour
                 referenceBodyInitialPosition = virtualOrbitData[i].position;
             }
         }
+        
 
         for (int step = 0; step < steps; step++)
         {
@@ -70,7 +73,6 @@ public class OrbitPredictor : MonoBehaviour
                 //     {
                 //     }
                 // }
-                // plotLength = (step * stepSize) * 2;
 
                 Vector3d nextPosition = virtualOrbitData[i].position;
                 if (referenceFrame != null)
@@ -89,7 +91,6 @@ public class OrbitPredictor : MonoBehaviour
 
         for (int bodyIndex = 0; bodyIndex < virtualOrbitData.Length; bodyIndex++)
         {
-            // var lineRenderer = orbits[bodyIndex].scaledTransform.GetComponent<LineRenderer>();
             var lineRenderer = orbitController.orbits[bodyIndex].transform.GetComponent<LineRenderer>();
             lineRenderer.positionCount = drawPoints[bodyIndex].Length;
             lineRenderer.SetPositions(drawPoints[bodyIndex]);
