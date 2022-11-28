@@ -4,16 +4,9 @@ using UnityEngine;
 public class OrbitManeuver : MonoBehaviour
 {
     public List<Maneuver> maneuvers;
-    public Orbit orbitBody;
-    public float predictionInterval = 1;
-    public OrbitPredictor orbitPredictor;
 
-    private float predictionTimer;
-
-    private void Update()
+    private void FixedUpdate()
     {
-        //orbitController.maneuver = maneuver;
-
         // if (maneuver.deltaV == Vector3.zero && orbitBody.keplerian.SMA > 0)
         // {
         //     orbitController.steps = (int)(((orbitBody.keplerian.T) / 2) / orbitController.stepSize);
@@ -23,32 +16,31 @@ public class OrbitManeuver : MonoBehaviour
         //     orbitController.steps = (int)(((maneuver.startTime + predictionLength) / 2) / orbitController.stepSize);
         // }
 
-        //maneuver.direction = (maneuver.deltaV + (Vector3)orbitBody.velocity).normalized;
+        if (Application.isPlaying)
+        {
+            for (int i = 0; i < GameController.Instance.timeScale; i++)
+            {
+                if (maneuvers.Count > 0)
+                {
+                    if (maneuvers[0].startTime > 0)
+                    {
+                        maneuvers[0].startTime -= Time.fixedDeltaTime;
+                    }
+                    else if (maneuvers[0].startTime <= 0)
+                    {
+                        if (maneuvers[0].duration > 0)
+                        {
+                            OrbitController.Instance.orbitData[0].AddForce(maneuvers[0].direction.normalized, maneuvers[0].acceleration, Time.fixedDeltaTime);
 
-        // if (Application.isPlaying)
-        // {
-        //     predictionTimer = predictionTimer <= 0 ? predictionInterval : predictionTimer -= Time.deltaTime * GameController.Instance.timeScale;
-
-        //     if (predictionTimer <= 0)
-        //     {
-        //         if (maneuver.startTime > 0)
-        //         {
-        //             maneuver.startTime -= Time.deltaTime * GameController.Instance.timeScale;
-        //         }
-        //         else if (maneuver.startTime <= 0)
-        //         {
-        //             if (maneuver.duration >= 0)
-        //             {
-        //                 orbitController.orbitData[1].AddConstantAcceleration(maneuver, 0);
-        //                 maneuver.duration -= Time.deltaTime * GameController.Instance.timeScale;
-
-        //                 maneuver = new Maneuver();
-        //             }
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        // }
+                            maneuvers[0].duration -= Time.fixedDeltaTime;
+                        }
+                        else if (GameController.Instance.universalTime > (maneuvers[0].startTime + maneuvers[0].duration))
+                        {
+                            maneuvers.Remove(maneuvers[0]);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

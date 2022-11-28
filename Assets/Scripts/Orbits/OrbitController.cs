@@ -11,8 +11,6 @@ public class OrbitController : MonoBehaviour
 
     public IntegrationMode integrationMode;
     public float fixedStepSize = 0.01f;
-    public bool masslessOptimization;
-    public ComputeShader compute;
     public Orbit[] orbits;
     public OrbitData[] orbitData;
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [ExecuteAlways, RequireComponent(typeof(OrbitController))]
@@ -12,6 +14,8 @@ public class OrbitPredictor : MonoBehaviour
     public OrbitData[] virtualOrbitData;
 
     private float predictionTimer;
+
+    public List<Maneuver> maneuvers;
 
     private void Update()
     {
@@ -33,7 +37,7 @@ public class OrbitPredictor : MonoBehaviour
 
     private void UpdateOrbit()
     {
-        predictionLength = (steps * stepSize) * 2;
+        steps = (int)(predictionLength / (stepSize * virtualOrbitData.Length));
 
         virtualOrbitData = new OrbitData[orbitController.orbits.Length];
         Vector3[][] drawPoints = new Vector3[orbitController.orbits.Length][];
@@ -51,8 +55,17 @@ public class OrbitPredictor : MonoBehaviour
                 referenceFrameIndex = i;
                 referenceBodyInitialPosition = virtualOrbitData[i].position;
             }
+
+            if (orbitController.orbits[i].GetComponent<OrbitManeuver>())
+            {
+                maneuvers = new List<Maneuver>(orbitController.orbits[i].GetComponent<OrbitManeuver>().maneuvers.Count);
+
+                orbitController.orbits[i].GetComponent<OrbitManeuver>().maneuvers.ForEach((item) =>
+                {
+                    maneuvers.Add(new Maneuver(item));
+                });
+            }
         }
-        
 
         for (int step = 0; step < steps; step++)
         {
@@ -62,17 +75,21 @@ public class OrbitPredictor : MonoBehaviour
             {
                 virtualOrbitData = orbitController.Propagation(virtualOrbitData, stepSize, orbitController.integrationMode);
 
-                // if ((step * stepSize) * 2 >= maneuver.startTime)
-                // {
-                //     if (maneuver.duration >= 0)
-                //     {
-                //         virtualOrbitData[1].AddForce(maneuver, stepSize);
-                //         maneuver.duration -= step * stepSize;
-                //     }
-                //     else if (step * stepSize > (maneuver.startTime + maneuver.duration))
-                //     {
-                //     }
-                // }
+                if (orbitController.orbits[i].GetComponent<OrbitManeuver>())
+                {
+                    for (int j = 0; j < maneuvers.Count; j++)
+                    {
+                        if ((step * stepSize * virtualOrbitData.Length) > maneuvers[j].startTime)
+                        {
+                            if (maneuvers[j].duration > 0)
+                            {
+                                virtualOrbitData[i].AddForce(maneuvers[j].direction.normalized, maneuvers[j].acceleration, stepSize);
+
+                                maneuvers[j].duration -= stepSize;
+                            }
+                        }
+                    }
+                }
 
                 Vector3d nextPosition = virtualOrbitData[i].position;
                 if (referenceFrame != null)

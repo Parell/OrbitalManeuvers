@@ -47,8 +47,8 @@ public struct OrbitData
         }
     }
 
-    public void AddForce(Maneuver maneuver, float deltaTime)
+    public void AddForce(Vector3 direction, float acceleration, float deltaTime)
     {
-        velocity += (Vector3d)(maneuver.acceleration * maneuver.direction * deltaTime);
+        velocity += (Vector3d)(acceleration * direction * deltaTime);
     }
 }
