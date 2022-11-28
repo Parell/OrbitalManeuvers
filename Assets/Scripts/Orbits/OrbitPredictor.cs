@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [ExecuteAlways, RequireComponent(typeof(OrbitController))]
@@ -14,8 +13,7 @@ public class OrbitPredictor : MonoBehaviour
     public OrbitData[] virtualOrbitData;
 
     private float predictionTimer;
-
-    public List<Maneuver> maneuvers;
+    private List<Maneuver> maneuvers;
 
     private void Update()
     {
@@ -73,8 +71,6 @@ public class OrbitPredictor : MonoBehaviour
 
             for (int i = 0; i < virtualOrbitData.Length; i++)
             {
-                virtualOrbitData = orbitController.Propagation(virtualOrbitData, stepSize, orbitController.integrationMode);
-
                 if (orbitController.orbits[i].GetComponent<OrbitManeuver>())
                 {
                     for (int j = 0; j < maneuvers.Count; j++)
@@ -90,6 +86,8 @@ public class OrbitPredictor : MonoBehaviour
                         }
                     }
                 }
+
+                virtualOrbitData = orbitController.Propagation(virtualOrbitData, stepSize, orbitController.integrationMode);
 
                 Vector3d nextPosition = virtualOrbitData[i].position;
                 if (referenceFrame != null)

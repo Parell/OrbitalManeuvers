@@ -16,7 +16,7 @@ public struct OrbitData
         this.position = position;
     }
 
-    private Vector3d Gravity(OrbitData[] bodyData)
+    public Vector3d Gravity(OrbitData[] bodyData)
     {
         var acceleration = Vector3d.zero;
 

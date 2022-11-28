@@ -8,6 +8,6 @@ An old project named <a href="https://github.com/cmdrflexo/RocketFOSS">RocketFos
 * Nbody physics and Time controllers.
 * Trajectories and maneuvers planning.
 * Vessel movement and maneuver ploting.
-* AI movement and decision making.
 * Floating origin and Scaled space.
 * Quad sphere and solar system editing.
+* AI movement and decision making.
