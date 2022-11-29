@@ -13,7 +13,7 @@ public class OrbitPredictor : MonoBehaviour
     public OrbitData[] virtualOrbitData;
 
     private float predictionTimer;
-    private List<Maneuver> maneuvers;
+    public List<Maneuver> maneuvers;
 
     private void Update()
     {
@@ -75,9 +75,9 @@ public class OrbitPredictor : MonoBehaviour
                 {
                     for (int j = 0; j < maneuvers.Count; j++)
                     {
-                        if ((step * stepSize * virtualOrbitData.Length) > maneuvers[j].startTime)
+                        if ((step * stepSize * virtualOrbitData.Length) >= maneuvers[j].startTime)
                         {
-                            if (maneuvers[j].duration > 0)
+                            if (maneuvers[j].duration >= 0)
                             {
                                 virtualOrbitData[i].AddForce(maneuvers[j].direction.normalized, maneuvers[j].acceleration, stepSize);
 

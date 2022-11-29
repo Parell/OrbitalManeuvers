@@ -18,13 +18,17 @@ public class OrbitManeuver : MonoBehaviour
 
         if (Application.isPlaying)
         {
+            for (int i = 0; i < maneuvers.Count; i++)
+            {
+                if (maneuvers[i].startTime > 0)
+                {
+                    maneuvers[i].startTime -= Time.fixedDeltaTime * GameController.Instance.timeScale;
+                }
+            }
+
             if (maneuvers.Count > 0)
             {
-                if (maneuvers[0].startTime > 0)
-                {
-                    maneuvers[0].startTime -= Time.fixedDeltaTime * GameController.Instance.timeScale;
-                }
-                else if (maneuvers[0].startTime <= 0)
+                if (maneuvers[0].startTime <= 0)
                 {
                     if (maneuvers[0].duration > 0)
                     {
