@@ -4,11 +4,11 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public double universalTime;
     public bool timeScaleKeys = true;
-    public int timeScale;
     public int maxTimeScale;
     public int frameRateLimit;
+
+    private int timeScale;
 
     private void Awake()
     {
@@ -54,14 +54,8 @@ public class GameController : MonoBehaviour
             {
                 timeScale = maxTimeScale;
             }
-        }
-    }
 
-    private void FixedUpdate()
-    {
-        for (int i = 0; i < timeScale; i++)
-        {
-            universalTime += Time.fixedDeltaTime;
+            OrbitController.Instance.timeScale = timeScale;
         }
     }
 }

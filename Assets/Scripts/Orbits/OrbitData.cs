@@ -7,6 +7,7 @@ public struct OrbitData
     public double mass;
     public Vector3d velocity;
     public Vector3d position;
+    // put manuvers into this
 
     public OrbitData(int index, double mass, Vector3d velocity, Vector3d position)
     {
@@ -32,19 +33,11 @@ public struct OrbitData
         return acceleration;
     }
 
-    public void Integration(OrbitData[] bodyData, float deltaTime, IntegrationMode integrationMode)
+    public void Integration(OrbitData[] bodyData, float deltaTime)
     {
-        if (integrationMode == IntegrationMode.Euler)
-        {
-            position += velocity * deltaTime;
-            velocity += Gravity(bodyData) * deltaTime;
-        }
-        else if (integrationMode == IntegrationMode.Leapfrog)
-        {
-            velocity += Gravity(bodyData) * 0.5 * deltaTime;
-            position += velocity * deltaTime;
-            velocity += Gravity(bodyData) * 0.5 * deltaTime;
-        }
+        velocity += Gravity(bodyData) * 0.5 * deltaTime;
+        position += velocity * deltaTime;
+        velocity += Gravity(bodyData) * 0.5 * deltaTime;
     }
 
     public void AddForce(Vector3 direction, float acceleration, float deltaTime)
